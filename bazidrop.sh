@@ -18,6 +18,14 @@ DBUPLOADER=/path/to/dropbox_uploader.sh
 
 CRYPTPSW=encryptionpassword
 
+# following is useful if you want to create a bazidrop.sh.cfg file in the same folder of this script
+# contents of the file should be the variable definitions above with the correct values
+# so the config is loaded from there and in case of updates you can just do
+# curl "https://raw.githubusercontent.com/ephestione/bazidrop/master/bazidrop.sh" -o bazidrop.sh
+# otherwise just edit above and leave it alone, it will throw an unconsequential error but who cares right?
+cd "${0%/*}"
+. bazidrop.sh.cfg
+
 if [ $1 ]
  then
   if [ $1 == "latest" ]
@@ -50,4 +58,3 @@ fi
 
 ${DBUPLOADER} upload ${BWORK}${FILENAME}.gz.gpg .
 rm ${BWORK}${FILENAME}*
-
