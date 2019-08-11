@@ -1,9 +1,6 @@
 #!/bin/bash
 
-BNAME=$(uname -n)
-BDATE=$(date +%Y-%m-%d)
-BMODE=cyclic
-
+# ============ CONFIG ============
 # all foldernames must end with /
 BSOURCE=/home/yourhomefolder/
 BDEST=/mnt/whatever
@@ -17,6 +14,11 @@ DBNAME=dbname
 DBUPLOADER=/path/to/dropbox_uploader.sh
 
 CRYPTPSW=encryptionpassword
+# =========== /CONFIG ============
+
+BNAME=$(uname -n)
+BDATE=$(date +%Y-%m-%d)
+BMODE=cyclic
 
 # following is useful if you want to create a bazidrop.sh.cfg file in the same folder of this script
 # contents of the file should be the variable definitions above with the correct values
