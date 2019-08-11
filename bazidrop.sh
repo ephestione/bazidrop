@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ============ CONFIG ============
+# ========== CONFIG ==========
 # all foldernames must end with /
 BSOURCE=/home/yourhomefolder/
 BDEST=/mnt/whatever
@@ -11,10 +11,12 @@ DBUSER=dbuser
 DBPASS=dbpass
 DBNAME=dbname
 
+# EXCLUDES= "--exclude somefolder/" # check rsync manpage
+
 DBUPLOADER=/path/to/dropbox_uploader.sh
 
 CRYPTPSW=encryptionpassword
-# =========== /CONFIG ============
+# ========= /CONFIG ==========
 
 BNAME=$(uname -n)
 BDATE=$(date +%Y-%m-%d)
@@ -36,13 +38,14 @@ if [ $1 ]
   fi
 fi
 
-rsync -a ${BSOURCE} ${BDEST}${BUSR} --delete #remove --delete if you want to keep deleted files in the source
-rsync -a --del --exclude admin/ /var/www/ ${BDEST}www  #see above
+rsync -a --delete --force --delete-excluded ${EXCLUDES} ${BSOURCE} ${BDEST}${BUSR} #remove --delete if you want to keep deleted files in $BDEST
+rsync -a --delete --force --delete-excluded --exclude admin/ /var/www/ ${BDEST}www  #see above
 mysqldump -u${DBUSER} -p${DBPASS} ${DBNAME} | bzip2 > ${BDEST}mysqldump.bz2
 crontab -u ${BUSR} -l > ${BDEST}crontab-${BUSR}.txt
 crontab -l > ${BDEST}crontab-root.txt
 cp /etc/apache2/sites-enabled/000-default.conf ${BDEST}
 cp /etc/rc.local ${BDEST}
+cp /etc/fstab ${BDEST}
 
 FILENAME=${BNAME}-${BMODE}
 
