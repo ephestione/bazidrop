@@ -27,4 +27,4 @@ This should be used with most distributions actually, I just need it for my RasP
 - curl "https://raw.githubusercontent.com/ephestione/bazidrop/master/bazidrop.sh" -o bazidrop.sh
 - either edit the first lines of the script, or create a bazidrop.sh.cfg file in the script's folder, containing those lines edited to suit you
 - chmod +x bazidrop.sh
-- run the script as root, either as is (cyclic mode) or with the "latest" parameter, so upload/overwrite the latest system shot
+- run the script as root, either as is (cyclic mode) or with the "latest" parameter, to upload/overwrite the latest system shot
