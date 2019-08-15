@@ -46,6 +46,10 @@ crontab -l > ${BDEST}crontab-root.txt
 cp /etc/apache2/sites-enabled/000-default.conf ${BDEST}
 cp /etc/rc.local ${BDEST}
 cp /etc/fstab ${BDEST}
+# restore following with:
+# sudo xargs -a packages_list.txt apt install
+dpkg-query -f '${binary:Package}\n' -W > ${BDEST}packages_list.txt
+
 
 FILENAME=${BNAME}-${BMODE}
 
