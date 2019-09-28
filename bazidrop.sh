@@ -46,6 +46,7 @@ crontab -l > ${BDEST}crontab-root.txt
 cp /etc/apache2/sites-enabled/000-default.conf ${BDEST}
 cp /etc/rc.local ${BDEST}
 cp /etc/fstab ${BDEST}
+cp /etc/samba/smb.conf ${BDEST}
 cp /boot/config.txt ${BDEST}
 # restore following with:
 # sudo xargs -a packages_list.txt apt install
