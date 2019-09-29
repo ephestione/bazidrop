@@ -7,9 +7,9 @@ I need to at least backup only the important files, in a small enough package to
 So this script also needs https://github.com/andreafabrizi/Dropbox-Uploader
 
 Basically you need to edit everything at the beginning of the script, removing what you don't need and adding what you do need.
-The script rsyncs the home folder and /var/www/, saves a mysql dump, the root and user crontab and the apache2 sites configuration, which were functional in my case.
+The script rsyncs the home folder and /etc/, saves a mysql dump, the root and user crontab, which were functional in my case.
 
-Then it gzips everything, encrypts it with GPG, and uploads to dropbox, after which gzip and gpg encrypted files are removed (not the rsync'd folders because I want to keep them)
+Then it 7zips everything, encrypts it with GPG, and uploads to dropbox, after which the working temp files are removed (not the rsync'd folders because I want to keep them)
 
 I know the code looks ugly, I am a bash initiate. It works though, and if you like please suggest/add edits.
 
