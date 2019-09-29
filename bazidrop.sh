@@ -3,7 +3,7 @@
 # ========== CONFIG ==========
 # all foldernames must end with /
 BSOURCE=/home/yourhomefolder/
-BDEST=/mnt/whatever
+BDEST=/mnt/whatever/
 BWORK=/tmp/
 BUSR=yourusername
 
