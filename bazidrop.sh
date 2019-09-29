@@ -3,7 +3,7 @@
 # ========== CONFIG ==========
 # all foldernames must end with /
 BSOURCE=/home/yourhomefolder/
-BDEST=/mnt/whatever/
+BDEST=/mnt/whatever
 BWORK=/tmp/
 BUSR=yourusername
 
@@ -38,15 +38,19 @@ if [ $1 ]
   fi
 fi
 
-rsync -a --delete --force --delete-excluded ${EXCLUDES} ${BSOURCE} ${BDEST}${BUSR} #remove --delete if you want to keep deleted files in $BDEST
-rsync -a --delete --force --delete-excluded --exclude admin/ /var/www/ ${BDEST}www  #see above
+mkdir -p ${BDEST}home/${BUSR}
+mkdir -p ${BDEST}var/www
+mkdir -p ${BDEST}etc
+
+rsync -a --delete --force --delete-excluded ${EXCLUDES} ${BSOURCE} ${BDEST}home/${BUSR} #remove --delete if you want to keep deleted files in $BDEST
+rsync -a --delete --force --delete-excluded --exclude admin/ /var/www/ ${BDEST}/var/www  #see above
+rsync -a --delete --force --delete-excluded --exclude '*pihole*' /etc/ ${BDEST}etc/
 mysqldump -u${DBUSER} -p${DBPASS} ${DBNAME} | bzip2 > ${BDEST}mysqldump.bz2
 crontab -u ${BUSR} -l > ${BDEST}crontab-${BUSR}.txt
 crontab -l > ${BDEST}crontab-root.txt
 cp /etc/apache2/sites-enabled/000-default.conf ${BDEST}
 cp /etc/rc.local ${BDEST}
 cp /etc/fstab ${BDEST}
-cp /etc/samba/smb.conf ${BDEST}
 cp /boot/config.txt ${BDEST}
 # restore following with:
 # sudo xargs -a packages_list.txt apt install
@@ -55,17 +59,17 @@ dpkg-query -f '${binary:Package}\n' -W > ${BDEST}packages_list.txt
 
 FILENAME=${BNAME}-${BMODE}
 
-tar -vczf ${BWORK}${FILENAME}.gz ${BDEST}
-echo "${CRYPTPSW}" | gpg --batch --yes --passphrase-fd 0 -c -o ${BWORK}${FILENAME}.gz.gpg ${BWORK}${FILENAME}.gz
+7z a -t7z -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on ${BWORK}${FILENAME}.7z ${BDEST}
+echo "${CRYPTPSW}" | gpg --batch --yes --passphrase-fd 0 -c -o ${BWORK}${FILENAME}.7z.gpg ${BWORK}${FILENAME}.7z
 
 if [ ${BMODE} == "cyclic" ]
   then
-      ${DBUPLOADER} delete ${FILENAME}.3.gz.gpg
-      ${DBUPLOADER} move ${FILENAME}.2.gz.gpg ${FILENAME}.3.gz.gpg
-      ${DBUPLOADER} move ${FILENAME}.1.gz.gpg ${FILENAME}.2.gz.gpg
-      ${DBUPLOADER} move ${FILENAME}.gz.gpg ${FILENAME}.1.gz.gpg
+      ${DBUPLOADER} delete ${FILENAME}.3.7z.gpg
+      ${DBUPLOADER} move ${FILENAME}.2.7z.gpg ${FILENAME}.3.7z.gpg
+      ${DBUPLOADER} move ${FILENAME}.1.7z.gpg ${FILENAME}.2.7z.gpg
+      ${DBUPLOADER} move ${FILENAME}.7z.gpg ${FILENAME}.1.7z.gpg
 fi
 
 
-${DBUPLOADER} upload ${BWORK}${FILENAME}.gz.gpg .
+${DBUPLOADER} upload ${BWORK}${FILENAME}.7z.gpg .
 rm ${BWORK}${FILENAME}*
