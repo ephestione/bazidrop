@@ -24,6 +24,8 @@ This should be used with most distributions actually, I just need it for my RasP
 
 # Instructions
 - install and configure https://github.com/andreafabrizi/Dropbox-Uploader
+- install 7zip compression with:
+    sudo apt install p7zip
 - curl "https://raw.githubusercontent.com/ephestione/bazidrop/master/bazidrop.sh" -o bazidrop.sh
 - either edit the first lines of the script, or create a bazidrop.sh.cfg file in the script's folder, containing those lines edited to suit you
 - chmod +x bazidrop.sh
