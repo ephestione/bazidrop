@@ -43,9 +43,9 @@ mkdir -p ${BDEST}var/www
 mkdir -p ${BDEST}etc
 mkdir -p ${BDEST}boot
 
-rsync -a --delete --force --delete-excluded ${EXCLUDES} ${BSOURCE} ${BDEST}home/${BUSR} #remove --delete if you want to keep deleted files in $BDEST
-rsync -a --delete --force --delete-excluded --exclude admin/ /var/www/ ${BDEST}/var/www  #see above
-rsync -a --delete --force --delete-excluded --exclude '*pihole*' /etc/ ${BDEST}etc/
+rsync -av --delete --force --delete-excluded ${EXCLUDES} ${BSOURCE} ${BDEST}home/${BUSR} #remove --delete if you want to keep deleted files in $BDEST
+rsync -av --delete --force --delete-excluded --exclude admin/ /var/www/ ${BDEST}/var/www  #see above
+rsync -av --delete --force --delete-excluded --exclude '*pihole*' /etc/ ${BDEST}etc/
 mysqldump -u${DBUSER} -p${DBPASS} ${DBNAME} | bzip2 > ${BDEST}mysqldump.bz2
 crontab -u ${BUSR} -l > ${BDEST}crontab-${BUSR}.txt
 crontab -l > ${BDEST}crontab-root.txt
