@@ -41,6 +41,7 @@ fi
 mkdir -p ${BDEST}home/${BUSR}
 mkdir -p ${BDEST}var/www
 mkdir -p ${BDEST}etc
+mkdir -p ${BDEST}boot
 
 rsync -a --delete --force --delete-excluded ${EXCLUDES} ${BSOURCE} ${BDEST}home/${BUSR} #remove --delete if you want to keep deleted files in $BDEST
 rsync -a --delete --force --delete-excluded --exclude admin/ /var/www/ ${BDEST}/var/www  #see above
@@ -48,10 +49,8 @@ rsync -a --delete --force --delete-excluded --exclude '*pihole*' /etc/ ${BDEST}e
 mysqldump -u${DBUSER} -p${DBPASS} ${DBNAME} | bzip2 > ${BDEST}mysqldump.bz2
 crontab -u ${BUSR} -l > ${BDEST}crontab-${BUSR}.txt
 crontab -l > ${BDEST}crontab-root.txt
-cp /etc/apache2/sites-enabled/000-default.conf ${BDEST}
-cp /etc/rc.local ${BDEST}
-cp /etc/fstab ${BDEST}
-cp /boot/config.txt ${BDEST}
+cp /boot/config.txt ${BDEST}boot/
+
 # restore following with:
 # sudo xargs -a packages_list.txt apt install
 dpkg-query -f '${binary:Package}\n' -W > ${BDEST}packages_list.txt
