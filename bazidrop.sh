@@ -58,7 +58,7 @@ dpkg-query -f '${binary:Package}\n' -W > ${BDEST}packages_list.txt
 
 FILENAME=${BNAME}-${BMODE}
 
-7z a -t7z -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on ${BWORK}${FILENAME}.7z ${BDEST}
+7z a -t7z -m0=lzma -mx=9 -mfb=64 -md=128m -ms=on ${BWORK}${FILENAME}.7z ${BDEST}
 echo "${CRYPTPSW}" | gpg --batch --yes --passphrase-fd 0 -c -o ${BWORK}${FILENAME}.7z.gpg ${BWORK}${FILENAME}.7z
 
 if [ ${BMODE} == "cyclic" ]
