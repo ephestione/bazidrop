@@ -2,7 +2,7 @@
 
 *Ba*ckup, *Zi*p and *Drop*box
 
-I do use https://github.com/lzkelley/bkup_rpimage already to image my OS on an external drive, but what if the room explodes and I'm left with nothing?
+I do use https://github.com/ephestione/RaspiBackup already to image my OS on an external drive, but what if the room explodes and I'm left with nothing?
 I need to at least backup only the important files, in a small enough package to upload to the cloud, in this case Dropbox.
 So this script also needs https://github.com/andreafabrizi/Dropbox-Uploader
 
