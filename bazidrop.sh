@@ -53,7 +53,7 @@ cp /boot/config.txt ${BDEST}boot/
 
 # restore following with:
 # sudo xargs -a packages_list.txt apt install
-dpkg-query -f '${binary:Package}\n' -W > ${BDEST}packages_list.txt
+apt-mark showmanual > ${BDEST}packages_list.txt
 
 
 FILENAME=${BNAME}-${BMODE}
