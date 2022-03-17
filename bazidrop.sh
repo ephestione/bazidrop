@@ -11,7 +11,7 @@ DBUSER=dbuser
 DBPASS=dbpass
 DBNAME=dbname
 
-# EXCLUDES= "--exclude somefolder/" # check rsync manpage
+# EXCLUDES="--exclude somefolder/" # check rsync manpage, NO SPACES between EXCLUDES="..."
 
 DBUPLOADER=/path/to/dropbox_uploader.sh
 
