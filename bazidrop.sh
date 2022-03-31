@@ -11,7 +11,7 @@ DBUSER=dbuser
 DBPASS=dbpass
 DBNAME=dbname
 
-# EXCLUDES="--exclude somefolder/" # check rsync manpage, NO SPACES between EXCLUDES="..."
+# EXCLUDES="--exclude somefolder/" # check rsync manpage
 
 DBUPLOADER=/path/to/dropbox_uploader.sh
 
@@ -43,9 +43,9 @@ mkdir -p ${BDEST}var/www
 mkdir -p ${BDEST}etc
 mkdir -p ${BDEST}boot
 
-rsync -av --delete --force --delete-excluded ${EXCLUDES} ${BSOURCE} ${BDEST}home/${BUSR} #remove --delete if you want to keep deleted files in $BDEST
-rsync -av --delete --force --delete-excluded --exclude admin/ /var/www/ ${BDEST}/var/www  #see above
-rsync -av --delete --force --delete-excluded --exclude '*pihole*' /etc/ ${BDEST}etc/
+rsync -a --delete --force --delete-excluded ${EXCLUDES} ${BSOURCE} ${BDEST}home/${BUSR} #remove --delete if you want to keep deleted files in $BDEST
+rsync -a --delete --force --delete-excluded --exclude admin/ /var/www/ ${BDEST}/var/www  #see above
+rsync -a --delete --force --delete-excluded --exclude '*pihole*' /etc/ ${BDEST}etc/
 mysqldump -u${DBUSER} -p${DBPASS} ${DBNAME} | bzip2 > ${BDEST}mysqldump.bz2
 crontab -u ${BUSR} -l > ${BDEST}crontab-${BUSR}.txt
 crontab -l > ${BDEST}crontab-root.txt
@@ -53,13 +53,15 @@ cp /boot/config.txt ${BDEST}boot/
 
 # restore following with:
 # sudo xargs -a packages_list.txt apt install
-apt-mark showmanual > ${BDEST}packages_list.txt
+dpkg-query -f '${binary:Package}\n' -W > ${BDEST}packages_list.txt
 
 
 FILENAME=${BNAME}-${BMODE}
 
 7z a -t7z -m0=lzma -mx=9 -mfb=64 -md=128m -ms=on ${BWORK}${FILENAME}.7z ${BDEST}
 echo "${CRYPTPSW}" | gpg --batch --yes --passphrase-fd 0 -c -o ${BWORK}${FILENAME}.7z.gpg ${BWORK}${FILENAME}.7z
+
+${DBUPLOADER} upload ${BWORK}${FILENAME}.7z.gpg ${FILENAME}.7z.gpg.tmp
 
 if [ ${BMODE} == "cyclic" ]
   then
@@ -70,5 +72,5 @@ if [ ${BMODE} == "cyclic" ]
 fi
 
 
-${DBUPLOADER} upload ${BWORK}${FILENAME}.7z.gpg .
+${DBUPLOADER} move ${FILENAME}.7z.gpg.tmp ${FILENAME}.7z.gpg
 rm ${BWORK}${FILENAME}*
